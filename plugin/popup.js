@@ -1,7 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const scrapeBtn = document.getElementById('scrapeBtn');
     const resultsDiv = document.getElementById('results');
-
+    const captureBtn = document.getElementById('captureBtn');
+    captureBtn.addEventListener('click', () => {
+        chrome.runtime.sendMessage({action: 'capture'});
+      });
     scrapeBtn.addEventListener('click', () => {
         // Your fetch call to the backend service
         fetch('http://localhost:3000/scrape', {
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             // Clear previous results
             resultsDiv.innerHTML = '';
             resultsDiv.style.display = "flex";
