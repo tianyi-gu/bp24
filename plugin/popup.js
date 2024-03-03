@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             // Clear previous results
             resultsDiv.innerHTML = '';
-
+            resultsDiv.style.display = "flex";
             // Generate HTML for each item and append to resultsDiv
             data.forEach(item => {
                 const itemDiv = document.createElement('div');

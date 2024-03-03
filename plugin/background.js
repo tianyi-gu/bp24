@@ -4,6 +4,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.tabs.sendMessage(sender.tab.id, { screenshotUrl: dataUrl });
       sendResponse({ screenshotUrl: dataUrl });
     });
+    console.log("took screenshot");
     return true; // Indicates that the response is asynchronous
   }
 });
