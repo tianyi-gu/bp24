@@ -4,6 +4,7 @@ import urllib.parse
 import uvicorn
 from mangum import Mangum
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # Clarifai info ---
@@ -97,17 +98,25 @@ async def greet(name: str):
 # }
 
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.post("/image")
 async def upload(
-    # n_concepts: int = Form(...),
-    # n_products: int = Form(...),
-    # file: UploadFile = File(...),
     req: Request,
 ):
     form = await req.form()
     n_concepts = int(form["n_concepts"])  # type: ignore
     n_products = int(form["n_products"])  # type: ignore
     file = form["image"]
+    print(f"{n_concepts}, {n_products}, {file.filename}")
+    # return {"hi": f"concepts: {n_concepts}, products: {n_products}"}
     if isinstance(file, str) or file.content_type != "image/png":
         return {
             "success": False,

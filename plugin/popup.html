@@ -1,21 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Screenshot Taker</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="splash-screen">
-    <img src="SnapShopLogo-01.png" alt="Logo">
-  </div>
-  <button id="captureBtn">Take Screenshot</button>
-  <div id="screenshotContainer">
-    <img id="screenshotImg" src="" alt="">
-  </div>
-  <button id="scrapeBtn">Scrape Amazon</button>
-  <img src="SnapShopLogoText-01.png" class="logo">
-  <div id="results"></div>
-  <div id="gradient"></div>
-  <script src="popup.js"></script>
-</body>
+  <head>
+    <title>Screenshot Taker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="splash-screen">
+      <img src="SnapShopLogo-01.png" alt="Logo" />
+    </div>
+    <!-- <button id="captureBtn"></button> -->
+    <button id="scrapeBtn">Scrape</button>
+    <form
+      id="imageForm"
+      action="http://localhost:8000/image"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      <input type="text" id="n_concepts" name="n_concepts" />
+      <input type="text" id="n_products" name="n_products" />
+      <input type="file" id="image" name="image" />
+    </form>
+
+    <div id="results"></div>
+    <script src="popup.js"></script>
+  </body>
 </html>

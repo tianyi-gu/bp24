@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+  <script src="content.js"></script>
+</head>
+<body>
+  <form id="imageForm" action="http://localhost:8000/image" method="POST" enctype="multipart/form-data">
+    <input type="text" id="n_concepts" name="n_concepts"/>
+    <input type="text" id="n_products" name="n_products"/>
+    <input type="file" id="image" name="image" style="display: none;"/>
+    <img id="screenshot" style="display: none;"/>
+  </form>
+  <script>
+    // Listen for messages from the background script
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.screenshotUrl) {
+        console.log("received");
+        const img = document.getElementById('screenshot');
+        img.src = request.screenshotUrl;
+        img.style.display = 'block';
+
+        // Convert the data URL to a blob
+        fetch(request.screenshotUrl)
+          .then(res => res.blob())
+          .then(blob => {
+            const file = new File([blob], 'screenshot.png', { type: 'image/png' });
+            const formData = new FormData(document.getElementById('imageForm'));
+            formData.append('image', file);
+            formData.append('n_concepts', request.n_concepts);
+            formData.append('n_products', request.n_products);
+
+            // Submit the form with the image
+            fetch('http://localhost:8000/image', {
+              method: 'POST',
+              body: formData,
+            })
+            .then(response => {
+              // Handle the response
+              console.log('Image submitted successfully');
+            })
+            .catch(error => {
+              console.error('Error submitting image:', error);
+            });
+          });
+      }
+    });
+    document.theForm.submit()
+  </script>
+</body>
+</html>
