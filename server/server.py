@@ -1,4 +1,5 @@
-from fastapi import FastAPI, File, UploadFile
+from typing import Optional
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 import urllib.parse
 
 # Clarifai info ---
@@ -19,30 +20,32 @@ USERDATA = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 # Amazon API (APIFY) info ---
 from apify_client import ApifyClient
 
-TOKEN = "apify_api_SO4LvWFkmdsaSiI7io6hfEF6KDJHAN0gsfiv"
+# TOKEN = "apify_api_SO4LvWFkmdsaSiI7io6hfEF6KDJHAN0gsfiv"
+TOKEN = "apify_api_jJgEYR8WqkeLmxwuwTgdBubcWjkhdA084x5r"
 ACTOR = "BG3WDrGdteHgZgbPK"
 AMZN_CLIENT = ApifyClient(TOKEN)
 AMZN_URL = "https://www.amazon.com/s?k={}"
 AMZN_REQ = {
-    "body": {
-        "maxItemsPerStartUrl": 5,
-        "useCaptchaSolver": False,
-        "scrapeProductVariantPrices": False,
-        "proxyConfiguration": {
-            "useApifyProxy": True,
-            "apifyProxyGroups": ["RESIDENTIAL"],
-        },
+    # "maxItemsPerStartUrl": 5,
+    "useCaptchaSolver": False,
+    "scrapeProductVariantPrices": False,
+    "proxyConfiguration": {
+        "useApifyProxy": True,
+        "apifyProxyGroups": ["RESIDENTIAL"],
     },
 }
 
+# Output config
 
-def amzn_input(concepts: list[str]) -> dict:
+
+def amzn_input(concepts: list[str], n_products: int) -> dict:
     urls = []
     for s in concepts:
         escaped = urllib.parse.quote_plus(s)
         urls.append({"url": AMZN_URL.format(escaped)})
     req = AMZN_REQ.copy()
-    req["body"]["categoryOrProductUrls"] = urls
+    req["categoryOrProductUrls"] = urls
+    req["maxItemsPerStartUrl"] = n_products
     return req
 
 
@@ -52,7 +55,23 @@ app = FastAPI()
 
 
 @app.post("/image")
-async def upload(file: UploadFile = File(...)):
+async def upload(
+    n_concepts: int,
+    n_products: int,
+    file: UploadFile = File(...),
+):
+    if n_concepts <= 0:
+        return {
+            "success": False,
+            "error": f"Invalid number: {n_concepts}",
+            "reason": "n_concepts must be greater than 0",
+        }
+    if n_products <= 0:
+        return {
+            "success": False,
+            "error": f"Invalid number: {n_products}",
+            "reason": "n_products must be greater than 0",
+        }
     try:
         # Get file from request
         bytes = await file.read()
@@ -71,25 +90,33 @@ async def upload(file: UploadFile = File(...)):
         )
         if resp.status.code != status_code_pb2.SUCCESS:
             return {
-                "message": "There was an error with the Clarifai API",
-                "error": resp.status.description,
+                "sucess": False,
+                "error": "There was an error with the Clarifai API",
+                "reason": resp.status.description,
             }
+        # print("got clarifai")
 
         # Forward to Amazon products API
-        print(resp.outputs[0])
-        print([(c.name, c.value) for c in resp.outputs[0].data.concepts])
-        run_input = amzn_input([c.name for c in resp.outputs[0].data.concepts][:5])
-        print(run_input)
+        # run_input = amzn_input([c.name for c in resp.outputs[0].data.concepts][:number])
+        run_input = amzn_input(
+            ["".join([c.name for c in resp.outputs[0].data.concepts][:n_concepts])],
+            n_products,
+        )
+        # print("got run input")
+        # print(run_input)
         run = AMZN_CLIENT.actor(ACTOR).call(run_input=run_input)
+        # print("got run")
         if run is None:
             return {
-                "message": "There was an error with the Amazon API",
-                "error": "`run` was None",
+                "sucess": False,
+                "error": "There was an error with the Amazon API",
+                "reason": "`run` was None",
             }
+        # print("amazon input")
         items = AMZN_CLIENT.dataset(run["defaultDatasetId"]).list_items()
         return {
-            "message": "Success",
-            "clarifai": [c.name for c in resp.outputs[0].data.concepts][:5],
+            "sucess": True,
+            "clarifai": [c.name for c in resp.outputs[0].data.concepts][:n_concepts],
             "amazon": items,
         }
     except Exception as e:
