@@ -1,6 +1,10 @@
 from typing import Optional
-from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 import urllib.parse
+import uvicorn
+from mangum import Mangum
+from fastapi.responses import JSONResponse
+
 
 # Clarifai info ---
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
@@ -52,12 +56,24 @@ def amzn_input(concepts: list[str], n_products: int) -> dict:
 # Server stuff -----
 
 app = FastAPI()
+handler = Mangum(app)
+
+
+@app.get("/ping")
+async def ping():
+    return {"message": "pong"}
+    # return JSONResponse(content={"message": "pong"})
+
+
+@app.get("/name")
+async def greet(name: str):
+    return {"message": f"Hello, {name}!"}
 
 
 @app.post("/image")
 async def upload(
-    n_concepts: int,
-    n_products: int,
+    n_concepts: int = Form(...),
+    n_products: int = Form(...),
     file: UploadFile = File(...),
 ):
     if n_concepts <= 0:
@@ -123,3 +139,7 @@ async def upload(
         return {"message": f"There was an error processing the image", "error": str(e)}
     finally:
         await file.close()
+
+
+if __name__ == "__main__":
+    uvicorn.run(app=app, host="0.0.0.0", port=8080)
