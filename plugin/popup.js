@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const title = document.createElement('h3');
                 title.textContent = item.title;
+                title.href = item.url;
 
-                const link = document.createElement('a');
-                link.href = item.url;
-                link.textContent = 'View on Amazon';
-                link.target = '_blank';
+                // const link = document.createElement('a'); / hyperlinked to text now
+                // link.textContent = 'View on Amazon';
+                // link.target = '_blank';
 
                 const image = document.createElement('img');
                 image.src = item.thumbnailImage;
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 itemDiv.appendChild(image);
                 itemDiv.appendChild(title);
-                itemDiv.appendChild(link);
+                // itemDiv.appendChild(link);
 
                 resultsDiv.appendChild(itemDiv);
             });
