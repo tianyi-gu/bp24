@@ -51,6 +51,10 @@ z-index: 10;
       display: none;
     }
   }
+  @keyframes slideIn {
+    from {bottom: -400px;}
+    to {bottom: 5px;}
+  }
   
   /* Apply fade in and fade out animations to splash screen */
   .splash-screen {
@@ -123,13 +127,13 @@ html
     height: 500px; /* max: 750px */
 }
 #results { 
-    display: flex;
+    display: none;
     z-index: 3;
     position: absolute; 
     left: 10px; 
     bottom: 5px;
     width: 280px;
-    height: 400px;
+    height: 410px;
     justify-content: center;
     align-items: center;
     overflow: scroll;
@@ -137,6 +141,7 @@ html
     border-radius: 10px;
     overflow-x: hidden;
     background-color: #1e2625;
+    animation: slideIn 0.5s ease-in-out;
 }
 .item {
     top: 100px;

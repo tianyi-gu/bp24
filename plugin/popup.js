@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsDiv.innerHTML = '';
             resultsDiv.style.display = "flex";
             resultsDiv.style.zIndex = 20; // results is always on top now
-            // Generate HTML for each item and append to resultsDiv
+            // generate HTML for each item and append to resultsDiv
             data.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
