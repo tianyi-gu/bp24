@@ -13,6 +13,7 @@ fastapi = "^0.110.0"
 clarifai-grpc = "^10.1.6"
 python-multipart = "^0.0.9"
 apify-client = "^1.6.4"
+mangum = "^0.17.0"
 
 
 [build-system]
