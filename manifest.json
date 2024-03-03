@@ -1,12 +1,9 @@
 {
     "manifest_version": 3,
-    "name": "Screenshot Taker",
+    "name": "Apify Extension",
     "version": "1.0",
-    "description": "A simple Chrome extension to take screenshots.",
+    "description": "A Chrome extension to scrape Amazon using Apify.",
     "permissions": ["activeTab"],
-    "background": {
-      "service_worker": "background.js"
-    },
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
