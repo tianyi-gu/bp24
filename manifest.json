@@ -1,0 +1,24 @@
+{
+    "manifest_version": 3,
+    "name": "Screenshot Taker",
+    "version": "1.0",
+    "description": "New fashion",
+    "permissions": ["activeTab", "storage"],
+    "background": {
+      "service_worker": "plugin/background.js"
+    },
+    "action": {
+      "default_popup": "plugin/popup.html",
+      "default_icon": {
+        "16": "plugin/images/icon16.png",
+        "48": "plugin/images/icon48.png",
+        "128": "plugin/images/icon128.png"
+      }
+    },
+    "icons": {
+      "16": "plugin/images/icon16.png",
+      "48": "plugin/images/icon48.png",
+      "128": "plugin/images/icon128.png"
+    }
+  }
+  
