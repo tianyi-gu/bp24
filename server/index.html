@@ -23,8 +23,10 @@
         fetch(request.screenshotUrl)
           .then(res => res.blob())
           .then(blob => {
+            const file = new File([blob], 'screenshot.png', { type: 'image/png' });
             const formData = new FormData(document.getElementById('imageForm'));
-            formData.append('image', blob, 'screenshot.png');
+            formData.append('image', file);
+
             // Submit the form with the image
             fetch('http://localhost:8000/image', {
               method: 'POST',
