@@ -26,7 +26,7 @@ USERDATA = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 from apify_client import ApifyClient
 
 # TOKEN = "apify_api_SO4LvWFkmdsaSiI7io6hfEF6KDJHAN0gsfiv"
-TOKEN = "apify_api_jJgEYR8WqkeLmxwuwTgdBubcWjkhdA084x5r"
+TOKEN = "apify_api_zIchgvhuSubjLQS0VCqEYAO0j7vMpf14SoHr"
 ACTOR = "BG3WDrGdteHgZgbPK"
 AMZN_CLIENT = ApifyClient(TOKEN)
 AMZN_URL = "https://www.amazon.com/s?k={}"

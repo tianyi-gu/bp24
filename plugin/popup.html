@@ -9,15 +9,20 @@
       <img src="SnapShopLogo-01.png" alt="Logo" />
     </div>
     <!-- <button id="captureBtn"></button> -->
-    <button id="scrapeBtn">Scrape</button>
+    <button id="scrapeBtn">Discover</button>
     <form
       id="imageForm"
       action="http://localhost:8000/image"
       method="POST"
       enctype="multipart/form-data"
     >
-      <input type="text" id="n_concepts" name="n_concepts" />
-      <input type="text" id="n_products" name="n_products" />
+      <input type="text" id="n_concepts" name="n_concepts" placholder="depth" />
+      <input
+        type="text"
+        id="n_products"
+        name="n_products"
+        placeholder="products"
+      />
       <input type="file" id="image" name="image" />
     </form>
 
