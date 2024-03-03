@@ -1,17 +1,67 @@
 body {
     height: 100%;
     width: 100%;
-    background-color: #2b2b2a;
+    background-color: #1e2625;
     display: flex;
     justify-content: center;
     /* align-items: center; */
     margin: 0%;
 }
+.logo {
+    position: fixed;
+    top: 70px;
+    size: 30%;
+    width: 200px;
+    height: 200px;
+    z-index: 7;
+}
+.splash-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #1e2625; /* Change to your desired background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+}
+
+.splash-screen img {
+width: 150px; /* Adjust size as needed */
+height: 150px;
+z-index: 10;
+}
+/* Fade out animation */
+@keyframes fadeIn {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  /* Fade out animation */
+  @keyframes fadeOut {
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      display: none;
+    }
+  }
+  
+  /* Apply fade in and fade out animations to splash screen */
+  .splash-screen {
+    animation: fadeIn 0.5s ease-in-out forwards, fadeOut 0.5s ease-in-out 1s forwards;
+  }
+  
 #scrapeBtn {
     height: 10%;
     width: 90%;
     background-color: dimgray;
-    border: 7px solid #245a5f;
+    border: 2px solid #245a5f;
     border-radius: 15px;
     font-size: 20px;
     color: white;
@@ -28,7 +78,7 @@ body {
     height: 10%;
     width: 90%;
     background-color: dimgray;
-    border: 7px solid #245a5f;
+    border: 2px solid #245a5f;
     border-radius: 15px;
     font-size: 20px;
     color: white;
@@ -45,6 +95,10 @@ body {
     background-color: #444542;
     transition: 0.4s;
 }
+#scrapeBtn:hover {
+    background-color: #444542;
+    transition: 0.4s;
+}
 /* #captureBtn:active {
     height: 0px;
     width: 0px;
@@ -55,15 +109,75 @@ body {
     padding: 0px;
 } */
 #gradient {
+    z-index: 5;
     position: fixed;
     bottom: -225px;
     height: 400px;
     width: 400px;
     border-radius: 50%;  
-    background-image: radial-gradient(#245a5f 30%, #2b2b2a 70%);
+    background-image: radial-gradient(#245a5f 30%, #1e2625 70%);
 }
 html
 {
     width: 300px; /* max: 1000px */
     height: 500px; /* max: 750px */
+}
+#results { 
+    display: flex;
+    z-index: 3;
+    position: absolute; 
+    left: 10px; 
+    bottom: 5px;
+    width: 280px;
+    height: 400px;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow-x: hidden;
+    background-color: #1e2625;
+}
+.item {
+    top: 100px;
+    scale: 75%;
+    color: white;
+    position: relative;
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 200;
+    /* background-color: #245a5f; */
+    /* border-radius: 15px; */
+    /* overflow: hidden; */
+    /* margin: 30px; */
+    margin-bottom: 0%;
+}
+h3 {
+    padding: 30px;
+    margin-top: 0%;
+    padding-top: 0%;
+}
+.image {
+    border-radius: 10px;
+    margin-bottom: 0px;
+}
+::-webkit-scrollbar {
+    width: 10px;
+  }
+/* ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  } */
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #ace4e9;
+border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #0f4244;
 }
