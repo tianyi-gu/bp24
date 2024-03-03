@@ -107,7 +107,13 @@ async def upload(
     form = await req.form()
     n_concepts = int(form["n_concepts"])  # type: ignore
     n_products = int(form["n_products"])  # type: ignore
-    file = form["image"]  # type: ignore
+    file = form["image"]
+    if isinstance(file, str) or file.content_type != "image/png":
+        return {
+            "success": False,
+            "error": f"Invalid image",
+            "reason": "Image upload must be valid",
+        }
     if n_concepts <= 0:
         return {
             "success": False,
