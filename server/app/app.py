@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 import urllib.parse
 import uvicorn
 from mangum import Mangum
@@ -70,12 +70,44 @@ async def greet(name: str):
     return {"message": f"Hello, {name}!"}
 
 
+# {
+#     "detail": [
+#         {
+#             "type": "missing",
+#             "loc": ["query", "n_concepts"],
+#             "msg": "Field required",
+#             "input": null,
+#             "url": "https://errors.pydantic.dev/2.6/v/missing",
+#         },
+#         {
+#             "type": "missing",
+#             "loc": ["query", "n_products"],
+#             "msg": "Field required",
+#             "input": null,
+#             "url": "https://errors.pydantic.dev/2.6/v/missing",
+#         },
+#         {
+#             "type": "missing",
+#             "loc": ["body", "file"],
+#             "msg": "Field required",
+#             "input": null,
+#             "url": "https://errors.pydantic.dev/2.6/v/missing",
+#         },
+#     ]
+# }
+
+
 @app.post("/image")
 async def upload(
-    n_concepts: int = Form(...),
-    n_products: int = Form(...),
-    file: UploadFile = File(...),
+    # n_concepts: int = Form(...),
+    # n_products: int = Form(...),
+    # file: UploadFile = File(...),
+    req: Request,
 ):
+    form = await req.form()
+    n_concepts = int(form["n_concepts"])  # type: ignore
+    n_products = int(form["n_products"])  # type: ignore
+    file = form["image"]  # type: ignore
     if n_concepts <= 0:
         return {
             "success": False,
