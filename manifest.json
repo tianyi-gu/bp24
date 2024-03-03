@@ -3,10 +3,13 @@
     "name": "Screenshot Taker",
     "version": "1.0",
     "description": "New fashion",
-    "permissions": ["activeTab", "storage", "<all_urls>"],
+    "permissions": ["activeTab", "storage"],
     "background": {
       "service_worker": "plugin/background.js"
     },
+    "host_permissions": [
+      "http://*/*", "https://*/*"
+    ],
     "action": {
       "default_popup": "plugin/popup.html",
       "default_icon": {
@@ -19,9 +22,6 @@
       "16": "plugin/images/icon16.png",
       "48": "plugin/images/icon48.png",
       "128": "plugin/images/icon128.png"
-    },
-    "host_permissions": [
-      "http://*/*", "https://*/*"
-    ]
+    }
   }
   

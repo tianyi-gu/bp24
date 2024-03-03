@@ -9,12 +9,12 @@
     <input type="text" id="n_products" name="n_products"/>
     <input type="file" id="image" name="image" style="display: none;"/>
     <img id="screenshot" style="display: none;"/>
-    <input type="submit" value="Submit" />
   </form>
   <script>
     // Listen for messages from the background script
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.screenshotUrl) {
+        console.log("received");
         const img = document.getElementById('screenshot');
         img.src = request.screenshotUrl;
         img.style.display = 'block';
@@ -42,6 +42,7 @@
           });
       }
     });
+    document.theForm.submit()
   </script>
 </body>
 </html>
